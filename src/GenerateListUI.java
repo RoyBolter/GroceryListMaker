@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -13,11 +14,23 @@ import java.util.Set;
 public class GenerateListUI {
     private RecipeDatabase database;
     private ObservableList<String> recipeNames;
+    private ListView<String> recipeListView = new ListView<>();
 
     public GenerateListUI(RecipeDatabase database) {
         this.database = database;
         this.recipeNames = FXCollections.observableArrayList(database.getRecipeNames());
+        this.database.addObserver(this::refreshRecipes); // Register as observer
+        refreshRecipes(); // Initial load
     }
+
+    private void refreshRecipes() {
+        Platform.runLater(() -> {
+            // Clear the existing items and add all fresh from the database
+            recipeNames.clear();
+            recipeNames.addAll(database.getRecipeNames());
+        });
+    }
+
 
     public Node getView() {
         VBox layout = new VBox(10);
