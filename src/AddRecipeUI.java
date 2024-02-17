@@ -21,6 +21,8 @@ public class AddRecipeUI {
         addButton.setOnAction(e -> {
             addRecipe(recipeNameField.getText(), ingredientField.getText());
             showAlert("Recipe Added", "The recipe has been successfully added!");
+            recipeNameField.clear();
+            ingredientField.clear();
         });
 
         layout.getChildren().addAll(new Label("Recipe Name:"), recipeNameField,

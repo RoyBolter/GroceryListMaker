@@ -70,4 +70,19 @@ public class RecipeDatabase {
             return new HashMap<>();
         }
     }
+
+    public void updateRecipeName(String oldName, String newName) {
+        // Check if the old recipe name exists and the new name does not exist
+        if (recipes.containsKey(oldName) && !recipes.containsKey(newName)) {
+            Recipe oldRecipe = recipes.remove(oldName); // Remove the old entry
+            oldRecipe.setName(newName); // Update the recipe's name
+            recipes.put(newName, oldRecipe); // Put it back with the new name
+            saveRecipes(); // Save changes
+            notifyObservers(); // Notify any observers
+        } else {
+            System.err.println("Error: Cannot update recipe name. The old name does not exist or the new name is already in use.");
+        }
+    }
+
+
 }
